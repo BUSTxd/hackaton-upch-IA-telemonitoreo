@@ -1,0 +1,28 @@
+# Dependencias
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Builds
+.next/
+out/
+dist/
+build/
+
+# Secretos (NUNCA subir)
+.env
+.env.local
+.env.*.local
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+*.log
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
