@@ -32,7 +32,7 @@ Paciente ─voz WebRTC─▶ apps/agent (Python · LiveKit Agents)
                         /medico  → cola por prioridad, transcripción, resumen
 ```
 
-- Animación de la IA: orbe que reacciona al audio (canvas/WebGL) como primera opción; un personaje en Rive si sobra tiempo. Evitar el avatar 3D.
+- La cara de la IA es el personaje de MedGO: SVG animado con código, sin dependencias (`apps/web/src/components/mascota/Mascota.tsx`). Es una copia; no hace falta Rive ni avatar 3D.
 - Alternativa más rápida si LiveKit se complica: Vapi o Retell.
 
 ## Estructura y desarrollo local
@@ -44,7 +44,10 @@ Paciente ─voz WebRTC─▶ apps/agent (Python · LiveKit Agents)
 | `rules/` | Umbrales clínicos JSON | — |
 | `supabase/` | Esquema y migraciones | — |
 
-- Estado actual: solo la estructura (README en cada carpeta). Aún no hay código.
+- Estado actual: `apps/web` tiene la landing con antesala, `/ingresar` y `/registro`, sin backend: la voz y la IA están simuladas. El resto sigue siendo estructura (README en cada carpeta).
+- Dirección nueva (por confirmar con el equipo): el público es el personal de salud, con acceso habilitado a mano; dicta los datos, la IA completa la ficha y la persona revisa. La arquitectura de arriba aún describe la llamada de la IA al paciente.
+- En `apps/web/src`: `app/` solo para rutas, `components/` para lo compartido y `features/<pantalla>/` para el código de cada pantalla. Detalle en `apps/web/README.md`.
+- El nombre del asistente es provisional y vive en `apps/web/src/config/marca.ts`.
 - Ubicación: `C:\dev\hackaton-upch-IA-telemonitoreo`. **No mover a OneDrive**, porque corrompe `.git` y hace lento `node_modules`.
 - Las claves van en `.env.local` (plantilla en `.env.example`) y **nunca se suben**. Si se sube una por error, hay que rotarla.
 - Solo **datos ficticios** de pacientes (Ley 29733, Perú).
