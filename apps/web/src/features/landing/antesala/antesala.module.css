@@ -1,0 +1,148 @@
+/* La capa tapa la landing; el personaje (z-index 50) y el texto (60) van encima. */
+.capa {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: radial-gradient(circle at 50% 45%, #fff, #e8eff8);
+  transition: opacity 0.7s ease 0.15s;
+}
+
+[data-fase='viajando'] .capa {
+  opacity: 0;
+}
+
+/* Tres filas: el personaje en la del centro queda justo en la mitad de la pantalla.
+   Si el texto no cabe debajo, la fila de arriba cede sitio. */
+.escena {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto minmax(max-content, 1fr);
+  justify-items: center;
+  padding: 16px;
+  pointer-events: none;
+}
+
+.destino {
+  grid-row: 2;
+  width: min(58vmin, 340px);
+  aspect-ratio: 1;
+}
+
+/* Teléfono apaisado: con el tamaño normal, «Entrar» se saldría de la pantalla. */
+@media (max-height: 500px) {
+  .destino {
+    width: 34vmin;
+  }
+}
+
+.texto {
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 16px;
+  text-align: center;
+  pointer-events: auto;
+  transition: opacity 0.25s ease;
+}
+
+[data-fase='viajando'] .texto {
+  opacity: 0;
+}
+
+.nombre,
+.frase,
+.boton {
+  animation: subir 0.6s ease both;
+}
+
+.nombre {
+  animation-delay: 0.7s;
+}
+
+.frase {
+  animation-delay: 0.85s;
+}
+
+.boton {
+  animation-delay: 1.15s;
+}
+
+/* El hueco del hero: sin stacking context propio salvo el z-index que lo saca sobre la capa. */
+.hueco {
+  position: relative;
+  z-index: 50;
+  aspect-ratio: 1;
+}
+
+[data-fase='landing'] .hueco {
+  z-index: auto;
+}
+
+.viajera {
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.viajera[data-lista] {
+  visibility: visible;
+}
+
+[data-fase='viajando'] .viajera {
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.aparece {
+  width: 100%;
+  height: 100%;
+  animation: aparecer 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  filter: drop-shadow(0 14px 24px rgb(15 31 61 / 0.18));
+  --dot-cuerpo: #fff;
+}
+
+/* Las secciones entran solas: el fundido va aquí y no en un contenedor común,
+   para no crear un stacking context que deje al personaje debajo de la capa. */
+.entra {
+  transition:
+    opacity 0.7s ease 0.3s,
+    transform 0.7s ease 0.3s;
+}
+
+[data-fase='antesala'] .entra {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capa,
+  .texto,
+  .entra,
+  [data-fase='viajando'] .viajera {
+    transition: none;
+  }
+
+  .nombre,
+  .frase,
+  .boton,
+  .aparece {
+    animation: none;
+  }
+}
