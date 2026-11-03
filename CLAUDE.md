@@ -36,7 +36,7 @@ apps/web (Next.js, mobile-first)
 | `rules/` | Estructura del alcance anterior | — |
 | `supabase/` | Esquema y migraciones | — |
 
-- Estado actual: `apps/web` tiene la landing, `/ingresar` (sin validar nada) y el flujo de ficha familiar (`/registro`, `/registro/nueva`, `/registro/[id]`). Los borradores se guardan en IndexedDB. Solo `GET /health` está conectado; `/records` y `/audio/process` esperan el contrato.
+- Estado actual: `apps/web` tiene la landing, `/ingresar` (sin validar nada) y el flujo de ficha familiar (`/registro`, `/registro/nueva`, `/registro/ficha?id=…`). Se publica como sitio estático en GitHub Pages (https://bustxd.github.io/hackaton-upch-IA-telemonitoreo/) con cada push a `main`. Los borradores se guardan en IndexedDB. Solo `GET /health` está conectado; `/records` y `/audio/process` esperan el contrato.
 - La URL del backend va en `apps/web/.env.local` como `NEXT_PUBLIC_API_URL`.
 - En `apps/web/src`: `app/` solo para rutas, `components/` para lo compartido y `features/<pantalla>/` para el código de cada pantalla. Detalle en `apps/web/README.md`.
 - El nombre del asistente es provisional y vive en `apps/web/src/config/marca.ts`.

@@ -9,7 +9,7 @@ export default function ListaFamilias({ familias }: { familias: EntradaFamilia[]
       {familias.map((f) => (
         <li key={f.id}>
           <Link
-            href={`/registro/${encodeURIComponent(f.id)}`}
+            href={`/registro/ficha?id=${encodeURIComponent(f.id)}`}
             className="flex min-h-16 flex-col gap-1 rounded-2xl border border-linea bg-white px-4 py-3 transition-colors hover:border-acento focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-acento"
           >
             <span className="flex items-start justify-between gap-3">

@@ -15,6 +15,16 @@ Para probar el micrófono desde un celular en la misma red hace falta HTTPS
 (`npx next dev --experimental-https`): por `http://192.168.x.x` el navegador no da el micrófono.
 Mientras tanto se puede cargar un archivo de audio.
 
+## Publicación (GitHub Pages)
+
+https://bustxd.github.io/hackaton-upch-IA-telemonitoreo/
+
+Se publica sola con cada push a `main` (`.github/workflows/pages.yml`). Es un sitio estático
+(`output: "export"`): sin servidor, por eso los ids van en la query (`/registro/ficha?id=…`).
+La URL del backend se toma de la variable del repo `NEXT_PUBLIC_API_URL`
+(Settings → Secrets and variables → Actions → Variables) al compilar. Al ser HTTPS, el
+micrófono funciona desde el celular.
+
 ## Configuración
 
 `apps/web/.env.local` (no se sube):
@@ -61,7 +71,7 @@ src/
 ├── app/                        Solo rutas
 │   ├── (marketing)/            /
 │   ├── (acceso)/               /ingresar
-│   └── (trabajo)/registro/     /registro (historial), /registro/nueva, /registro/[id]
+│   └── (trabajo)/registro/     /registro (historial), /registro/nueva, /registro/ficha?id=
 ├── components/mascota/         El personaje, compartido
 ├── features/
 │   ├── landing/                Antesala, secciones y sus textos

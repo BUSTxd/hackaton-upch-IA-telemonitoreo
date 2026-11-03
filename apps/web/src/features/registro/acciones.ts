@@ -4,7 +4,7 @@ import type { EstadoFicha } from './estados';
 import { combinarDatos, fichaVacia, lugarFicha, nombreFicha, nuevoId, visitaVacia } from './ficha';
 
 export type EntradaFamilia = {
-  /** El id de la ruta `/registro/[id]`: el del borrador, o el `record_id` si solo está en el índice. */
+  /** El id de `/registro/ficha?id=`: el del borrador, o el `record_id` si solo está en el índice. */
   id: string;
   numero: string;
   lugar: string;
