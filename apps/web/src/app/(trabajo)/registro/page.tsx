@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { ASISTENTE } from '@/config/marca';
-import EspacioRegistro from '@/features/registro/EspacioRegistro';
+import Historial from '@/features/registro/Historial';
 
-export const metadata: Metadata = { title: `Registro · ${ASISTENTE}` };
+export const metadata: Metadata = { title: `Registros · ${ASISTENTE}` };
 
 export default function Page() {
-  return <EspacioRegistro />;
+  return <Historial />;
 }
