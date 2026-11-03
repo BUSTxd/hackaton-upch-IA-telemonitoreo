@@ -9,9 +9,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: `${ASISTENTE} · Telemonitoreo con IA de voz`,
+  title: `${ASISTENTE} · Recopilación de datos en campo`,
   description:
-    "El personal de salud dicta los datos del paciente, la IA completa la ficha y las reglas ordenan los casos por prioridad clínica. Hackatón UPCH.",
+    "El trabajador de salud graba la entrevista familiar, la IA transcribe y ordena los datos en la ficha, y la persona los revisa y confirma. Hackatón UPCH.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

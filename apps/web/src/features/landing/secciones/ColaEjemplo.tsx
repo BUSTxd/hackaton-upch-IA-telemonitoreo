@@ -1,10 +1,10 @@
 import s from '../antesala/antesala.module.css';
-import { COLA_EJEMPLO, type Prioridad } from '../contenido';
+import { COLA_EJEMPLO, type EstadoEjemplo } from '../contenido';
 
-const COLOR: Record<Prioridad, string> = {
-  alta: 'bg-prioridad-alta',
-  media: 'bg-prioridad-media',
-  baja: 'bg-prioridad-baja',
+const COLOR: Record<EstadoEjemplo, string> = {
+  borrador: 'bg-suave',
+  pendiente: 'bg-prioridad-media',
+  confirmado: 'bg-prioridad-baja',
 };
 
 export default function ColaEjemplo() {
@@ -17,14 +17,14 @@ export default function ColaEjemplo() {
       </div>
       <ol className="divide-y divide-linea rounded-2xl border border-linea bg-white">
         {COLA_EJEMPLO.casos.map((caso) => (
-          <li key={caso.paciente} className="flex items-start gap-4 p-5">
-            <span className={`mt-1.5 size-3 shrink-0 rounded-full ${COLOR[caso.prioridad]}`} aria-hidden="true" />
+          <li key={caso.familia} className="flex items-start gap-4 p-5">
+            <span className={`mt-1.5 size-3 shrink-0 rounded-full ${COLOR[caso.estado]}`} aria-hidden="true" />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-                <h3 className="font-semibold text-tinta">{caso.paciente}</h3>
-                <span className="text-sm font-medium text-suave">Prioridad {caso.etiqueta.toLowerCase()}</span>
+                <h3 className="font-semibold text-tinta">{caso.familia}</h3>
+                <span className="text-sm font-medium text-suave">{caso.etiqueta}</span>
               </div>
-              <p className="mt-1 text-suave">{caso.motivo}</p>
+              <p className="mt-1 text-suave">{caso.detalle}</p>
             </div>
           </li>
         ))}

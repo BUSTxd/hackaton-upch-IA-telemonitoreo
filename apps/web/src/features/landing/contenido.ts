@@ -1,14 +1,14 @@
 import { ASISTENTE } from '@/config/marca';
 
 export const ANTESALA = {
-  frase: 'Dicta los datos del paciente y la IA completa la ficha.',
+  frase: 'Graba la entrevista y la IA ordena la ficha familiar.',
   entrar: 'Entrar',
 };
 
 export const HERO = {
-  antetitulo: 'Telemonitoreo con IA de voz',
-  titulo: 'Dicta. La ficha se completa. Lo urgente va primero.',
-  descripcion: `${ASISTENTE} escucha al personal de salud, completa la ficha del paciente y avisa si un dato parece mal antes de guardarlo.`,
+  antetitulo: 'Recopilación de datos en campo',
+  titulo: 'Entrevista. La ficha se ordena. Tú confirmas.',
+  descripcion: `${ASISTENTE} transcribe la entrevista con la familia, ordena los datos en la ficha y marca lo que falta o hay que revisar. Nada se guarda sin que lo confirmes.`,
   accion: 'Ver cómo funciona',
   ingresar: 'Ingresar',
 };
@@ -16,37 +16,37 @@ export const HERO = {
 export const COMO_FUNCIONA = {
   titulo: 'Cómo funciona',
   pasos: [
-    { titulo: 'Dicta', texto: 'El personal de salud dice en voz alta los signos y síntomas del paciente.' },
-    { titulo: 'Se completa', texto: `${ASISTENTE} transcribe lo que oye y llena cada campo de la ficha.` },
-    { titulo: 'Se revisa', texto: 'Lo que parece mal queda marcado, y no se guarda hasta que una persona lo corrija.' },
-    { titulo: 'Se prioriza', texto: 'Las reglas clínicas ordenan a los pacientes y explican el motivo.' },
+    { titulo: 'Graba', texto: 'Durante la visita, el trabajador de salud graba la entrevista desde su celular o carga el audio.' },
+    { titulo: 'Se transcribe', texto: `${ASISTENTE} convierte el audio en texto y extrae los datos que se mencionaron.` },
+    { titulo: 'Se revisa', texto: 'Los datos se ordenan en la ficha familiar. Lo que falta o no cuadra queda marcado para corregirlo.' },
+    { titulo: 'Se guarda', texto: 'La persona confirma la ficha y, en cada nueva visita, la actualiza.' },
   ],
 };
 
-export type Prioridad = 'alta' | 'media' | 'baja';
+export type EstadoEjemplo = 'borrador' | 'pendiente' | 'confirmado';
 
 export const COLA_EJEMPLO = {
-  titulo: 'Lo urgente, arriba',
-  descripcion: 'Así vería el personal de salud la lista de pacientes al guardar cada ficha.',
-  aviso: 'Pacientes y datos ficticios, solo de ejemplo.',
+  titulo: 'Cada ficha, con su estado',
+  descripcion: 'Así vería el trabajador de salud sus registros familiares: lo que aún es borrador, lo que espera revisión y lo ya confirmado.',
+  aviso: 'Familias y datos ficticios, solo de ejemplo.',
   casos: [
-    { paciente: 'Paciente ficticio A', prioridad: 'alta', etiqueta: 'Alta', motivo: 'Saturación de 88 % con falta de aire en reposo.' },
-    { paciente: 'Paciente ficticio B', prioridad: 'media', etiqueta: 'Media', motivo: 'Presión de 150/95 y mareos desde ayer.' },
-    { paciente: 'Paciente ficticio C', prioridad: 'baja', etiqueta: 'Baja', motivo: 'Signos en rango y sin síntomas nuevos.' },
-  ] satisfies { paciente: string; prioridad: Prioridad; etiqueta: string; motivo: string }[],
+    { familia: 'Familia ficticia 0042', estado: 'pendiente', etiqueta: 'Pendiente de revisión', detalle: 'Datos extraídos de la entrevista: 2 por revisar.' },
+    { familia: 'Familia ficticia 0017', estado: 'borrador', etiqueta: 'Borrador', detalle: 'Ficha empezada a mano: faltan datos del hogar.' },
+    { familia: 'Familia ficticia 0008', estado: 'confirmado', etiqueta: 'Confirmado', detalle: '4 integrantes, 3 visitas registradas.' },
+  ] satisfies { familia: string; estado: EstadoEjemplo; etiqueta: string; detalle: string }[],
 };
 
 export const PRINCIPIO = {
-  titulo: 'La IA escucha. Las reglas priorizan. El personal de salud decide.',
+  titulo: 'La IA escucha y ordena. La persona revisa y decide.',
   puntos: [
-    { titulo: 'La IA escucha', texto: 'Transcribe lo dictado, llena la ficha y señala lo dudoso.' },
-    { titulo: 'Las reglas priorizan', texto: 'La prioridad sale de reglas clínicas deterministas y auditables, no del modelo.' },
-    { titulo: 'El personal decide', texto: 'Nada se guarda sin una persona, y la decisión clínica nunca es de la IA.' },
+    { titulo: 'La IA escucha', texto: 'Transcribe la entrevista y extrae solo lo que se mencionó: lo demás queda vacío.' },
+    { titulo: 'La ficha avisa', texto: 'Lo que falta, lo que no cuadra y lo que vino de la IA queda marcado.' },
+    { titulo: 'La persona decide', texto: 'Nada extraído por IA se da por confirmado hasta que una persona lo revisa y lo guarda.' },
   ],
 };
 
 export const PIE = {
   evento: 'Hackatón UPCH',
-  aviso: 'Herramienta de apoyo al triaje, no de diagnóstico.',
+  aviso: 'Apoyo para recopilar y ordenar datos. No diagnostica.',
   equipo: ['BUSTxd', 'Jenny Cabrera Palomino'],
 };
