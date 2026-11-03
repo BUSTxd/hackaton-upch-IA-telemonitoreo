@@ -1,43 +1,38 @@
-# Hackatón UPCH · IA de telemonitoreo por voz
+# Hackatón UPCH · Asistente para la recopilación de datos en campo
 
-Agente de voz con IA que realiza el telemonitoreo de pacientes en nombre del médico
-y ordena los casos por prioridad clínica.
+Aplicación móvil para trabajadores de salud que hacen entrevistas familiares en campo:
+graban la entrevista, la IA la transcribe y ordena los datos en una ficha familiar, y la
+persona los revisa, corrige y confirma.
 
-> ⚠️ Herramienta de **apoyo al triaje**, no de diagnóstico. Usar solo **datos ficticios**.
+> ⚠️ **No diagnostica** ni hace telemonitoreo clínico: solo ayuda a recopilar, ordenar y validar
+> datos. La confirmación final siempre es de una persona. Usar solo **datos ficticios** (Ley 29733).
 
-## Arquitectura
+## Flujo
 
 ```
-PACIENTE ──voz (WebRTC)──▶ AGENTE DE VOZ (apps/agent)
-                            STT → LLM → TTS
-                            │ tool calls (signos, síntomas)
-                            ▼
-                         MOTOR DE REGLAS (rules/) → prioridad 🔴🟡🟢 + motivo
-                            ▼
-                         SUPABASE (Postgres + Realtime)
-                            ▼
-                         FRONTEND (apps/web)
-                           • /llamada → animación de la IA hablando
-                           • /medico  → cola por prioridad, transcripción, resumen
+Entrevista (grabar o cargar audio)
+   ▼  POST /audio/process  → transcripción + datos extraídos (pending_review, NO se guarda)
+Revisión humana de la ficha (A. identificación · B. hogar · C. integrantes · D. visitas)
+   ▼  POST /records  o  PUT /records/{record_id}  → solo al confirmar
+Historial de fichas y nuevas visitas
 ```
-
-- **El LLM conversa y extrae datos; las reglas deciden la prioridad** (auditable).
-- El médico siempre toma la decisión final.
 
 ## Estructura
 
-| Carpeta        | Qué contiene                                   |
-|----------------|------------------------------------------------|
-| `apps/web`     | Frontend Next.js (dashboard médico + llamada)  |
-| `apps/agent`   | Agente de voz en Python (LiveKit Agents)       |
-| `rules/`       | Umbrales clínicos en JSON                      |
-| `supabase/`    | Esquema y migraciones de la base de datos      |
+| Carpeta      | Qué contiene                                              |
+|--------------|-----------------------------------------------------------|
+| `apps/web`   | Frontend Next.js, mobile-first. Detalle en su README      |
+| `apps/agent` | Estructura del agente de voz del alcance anterior         |
+| `rules/`     | Estructura para reglas (del alcance anterior)             |
+| `supabase/`  | Estructura para esquema y migraciones                     |
+
+El backend FastAPI (`/health`, `/records`, `/audio/*`) **no está en este repo**. Hasta tener
+su contrato, el frontend no se conecta a `/records` ni a `/audio/*` (ver `apps/web/README.md`).
 
 ## Desarrollo local
 
-1. Copiar `.env.example` a `.env.local` y rellenar las claves (pedirlas al equipo, nunca por el repo).
+1. Crear `apps/web/.env.local` con `NEXT_PUBLIC_API_URL` (plantilla en `.env.example`).
 2. Frontend: `cd apps/web && npm install && npm run dev` → http://localhost:3000
-3. Agente: `cd apps/agent && python agent.py dev`
 
 ## Flujo de trabajo en equipo
 

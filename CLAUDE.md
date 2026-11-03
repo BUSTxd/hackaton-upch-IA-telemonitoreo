@@ -9,43 +9,35 @@
 
 ## Proyecto
 
-Hackatón UPCH: **IA agéntica de voz que hace el telemonitoreo** de pacientes en nombre del médico y **los ordena por prioridad** clínica.
+Hackatón UPCH: **asistente para la recopilación de datos familiares en campo**. El trabajador de salud graba la entrevista, la IA la transcribe y ordena los datos en una ficha familiar, y la persona revisa, corrige y confirma. (Desde el 2026-11-02 reemplaza al alcance anterior de telemonitoreo por voz y prioridad clínica.)
 
-**Principio clave: el LLM conversa y extrae datos; el motor de reglas decide la prioridad.**
-- LLM: conversa con el paciente, extrae los datos estructurados (signos vitales, síntomas) mediante tool calls y redacta el resumen para el médico.
-- Motor de reglas (`rules/`, JSON): asigna la prioridad 🔴 / 🟡 / 🟢 + motivo. Es determinista y auditable.
-- El médico siempre toma la decisión final. Es apoyo al triaje, **no** diagnóstico.
+**Principio clave: la IA solo recopila y ordena; no diagnostica ni prioriza.** Lo no mencionado queda vacío, lo extraído por IA nunca se presenta como confirmado, y confirmar siempre es de una persona.
 
 ## Arquitectura
 
 ```
-Paciente ─voz WebRTC─▶ apps/agent (Python · LiveKit Agents)
-                        STT Deepgram → LLM Claude (Haiku 5.5, baja latencia) → TTS Cartesia/ElevenLabs
-                        tools: registrar_signos, registrar_sintomas, finalizar_llamada
-                        ▼
-                     rules/ → prioridad + motivo
-                        ▼
-                     Supabase (Postgres + Realtime)
-                        ▼
-                     apps/web (Next.js + TypeScript + Tailwind)
-                        /llamada → animación de la IA (escuchando / pensando / hablando)
-                        /medico  → cola por prioridad, transcripción, resumen
+apps/web (Next.js, mobile-first)
+  /registro/nueva → grabar o cargar audio
+     ▼ POST /audio/process (FastAPI) → transcripción + datos, pending_review, NO guarda
+  revisión humana de la ficha (A–D)
+     ▼ POST /records | PUT /records/{record_id} → solo al confirmar
+  /registro → historial (solo este dispositivo: no hay GET /records)
 ```
 
-- La cara de la IA es el personaje de MedGO: SVG animado con código, sin dependencias (`apps/web/src/components/mascota/Mascota.tsx`). Es una copia; no hace falta Rive ni avatar 3D.
-- Alternativa más rápida si LiveKit se complica: Vapi o Retell.
+- El backend FastAPI **no está en este repo** y su contrato JSON aún no se conoce. Todo lo que depende de él está en `apps/web/src/features/registro/api/contrato.ts` (`CONTRATO_DISPONIBLE = false`). Ver la tabla de endpoints en `apps/web/README.md`.
+- La cara de la IA es el personaje de MedGO: SVG animado con código, sin dependencias (`apps/web/src/components/mascota/Mascota.tsx`).
 
 ## Estructura y desarrollo local
 
 | Carpeta | Contenido | Comando de desarrollo |
 |---|---|---|
 | `apps/web` | Frontend Next.js | `npm run dev` → http://localhost:3000 |
-| `apps/agent` | Agente de voz Python | `python agent.py dev` |
-| `rules/` | Umbrales clínicos JSON | — |
+| `apps/agent` | Estructura del alcance anterior | — |
+| `rules/` | Estructura del alcance anterior | — |
 | `supabase/` | Esquema y migraciones | — |
 
-- Estado actual: `apps/web` tiene la landing con antesala, `/ingresar` y `/registro`, sin backend: la voz y la IA están simuladas. El resto sigue siendo estructura (README en cada carpeta).
-- Dirección nueva (por confirmar con el equipo): el público es el personal de salud, con acceso habilitado a mano; dicta los datos, la IA completa la ficha y la persona revisa. La arquitectura de arriba aún describe la llamada de la IA al paciente.
+- Estado actual: `apps/web` tiene la landing, `/ingresar` (sin validar nada) y el flujo de ficha familiar (`/registro`, `/registro/nueva`, `/registro/[id]`). Los borradores se guardan en IndexedDB. Solo `GET /health` está conectado; `/records` y `/audio/process` esperan el contrato.
+- La URL del backend va en `apps/web/.env.local` como `NEXT_PUBLIC_API_URL`.
 - En `apps/web/src`: `app/` solo para rutas, `components/` para lo compartido y `features/<pantalla>/` para el código de cada pantalla. Detalle en `apps/web/README.md`.
 - El nombre del asistente es provisional y vive en `apps/web/src/config/marca.ts`.
 - Ubicación: `C:\dev\hackaton-upch-IA-telemonitoreo`. **No mover a OneDrive**, porque corrompe `.git` y hace lento `node_modules`.
@@ -75,4 +67,5 @@ Paciente ─voz WebRTC─▶ apps/agent (Python · LiveKit Agents)
 
 - **BUSTxd**: dueño del repo; frontend y arquitectura del agente.
 - **Jennycbrpl** (Jenny Cabrera Palomino): colaboradora con permiso de escritura.
+- **mikepimez**: colaborador (se unió el 2026-11-01).
 - En un repo personal solo el dueño puede invitar. Para que otros también puedan invitar, hay que mover el repo a una Organización de GitHub y darles el rol Admin.
