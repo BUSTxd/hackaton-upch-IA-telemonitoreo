@@ -26,3 +26,9 @@ Thumbs.db
 # Supabase local
 supabase/.branches/
 supabase/.temp/
+
+
+# Entorno virtual y datos privados del backend
+apps/agent/.venv/
+apps/agent/data/
+apps/agent/.env
